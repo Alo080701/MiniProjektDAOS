@@ -303,7 +303,7 @@ public class System {
             //via native driver
             String server = "localhost\\SQLEXPRESS"; //virker måske hos dig      forsøgt med: LAPTOP-4JPSS6LS\SQLEXPRESS
             //virker det ikke - prøv kun med localhost
-            String dbnavn = "lektion02";            //virker måske hos dig
+            String dbnavn = "skolesys";            //virker måske hos dig
             String login = "sa";                     //skal ikke ændres
             String password = "kode";            //skal ændres
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -313,53 +313,23 @@ public class System {
             stmt = minConnection.createStatement();
             //Indlæsning og kald af den rigtige metode
             java.lang.System.out.println("Indtast  ");
-            java.lang.System.out.println("s for select uden parameter  ");
-            java.lang.System.out.println("sp for select med parameter  ");
-            java.lang.System.out.println("i for insert med strengmanipulation");
-            java.lang.System.out.println("ps for insert med prepared statement ");
-            java.lang.System.out.println("pis for select med navn, stilling, postdistrikt, firmanavn");
-            java.lang.System.out.println("ost for navn med average løn ");
-            java.lang.System.out.println("bjerg for stilling navnet på den, der har den højeste løn");
-            java.lang.System.out.println("postnummer for insert postnummer");
-            java.lang.System.out.println("person for insert person");
+            java.lang.System.out.println("A for at oprette eksamens forsøg  ");
+            java.lang.System.out.println("B for at oprette en eksamensafvikling");
+            java.lang.System.out.println("C for at få liste på studerende ve dgiven eksamen og termin");
 
 
             String in = inLine.readLine();
             switch (in) {
-                case "s": {
+                case "A": {
                     selectudenparm();
                     break;
                 }
-                case "sp": {
+                case "B": {
                     selectmedparm();
                     break;
                 }
-                case "i": {
+                case "C": {
                     insertmedstring();
-                    break;
-                }
-                case "ps": {
-                    insertprepared();
-                    break;
-                }
-                case "pis": {
-                    selectmedpis();
-                    break;
-                }
-                case "ost": {
-                    selectmedost();
-                    break;
-                }
-                case "bjerg": {
-                    selectmedbjerg();
-                    break;
-                }
-                case "person": {
-                    insertPerson();
-                    break;
-                }
-                case "postnummer": {
-                    insertpostnummer();
                     break;
                 }
                 default:
