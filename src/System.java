@@ -19,54 +19,60 @@ public class System {
     static Statement stmt;
     static BufferedReader inLine;
 
-    public static void insertmedstring() {
+
+    public static void insertEksamensForsøg() {
         try {
             // indlæsning
-            java.lang.System.out.println("Vi vil nu oprette et nyt ansættelsesfforhold");
-            java.lang.System.out.println("Indtast cpr (personen skal være oprettet på forhånd");
-            String cprstr = inLine.readLine();
-            java.lang.System.out.println("Indtast firmanr (firma skal være oprettet på forhånd");
-            String firmastr = inLine.readLine();
+            java.lang.System.out.println("Vi vil nu oprette et nyt eksamensforsøg");
+            java.lang.System.out.println("Indtast elev nummer (personen skal være oprettet på forhånd)");
+            String elevNrstr=inLine.readLine();
+            java.lang.System.out.println("Indtast afviklings ID (afvikling skal være oprettet på forhånd)");
+            String afviklingstr=inLine.readLine();
+            java.lang.System.out.println("Indtast antal eksamensforsøg");
+            String antalForsøgstr=inLine.readLine();
+            java.lang.System.out.println("Er bestået? (1 = ja, 0 = nej");
+            String beståetstr =inLine.readLine();
+            java.lang.System.out.println("Indtast tilstand? (SY (Syg), IM (Ikke Mødt), IA (Ikke Afleveret), VM (Vel Mødt))");
+            String tilstandstr=inLine.readLine();
+            java.lang.System.out.println("Indtast karakter?");
+            String karakterstr = inLine.readLine();
+            java.lang.System.out.println("Indtast id for eksamensforsøget");
+            String pkIDstr=inLine.readLine();
 
-            // sender insert'en til db-serveren
-            String sql = "insert into ansati values ('" + cprstr + "'," + firmastr + ")";
-            java.lang.System.out.println("SQL-streng er " + sql);
+
+            String sql = "insert into eksamensForsoeg values (" + pkIDstr + ", " + antalForsøgstr + ", " + beståetstr + ", '" + tilstandstr + "', " + karakterstr + ", " + elevNrstr + ", " + afviklingstr + ")";
+            java.lang.System.out.println("SQL-streng er "+ sql);
             stmt.execute(sql);
-            // pænt svar til brugeren
-            java.lang.System.out.println("Ansættelsen er nu registreret");
+            java.lang.System.out.println("Eksamensforsøget er nu oprettet");
             if (!minConnection.isClosed()) minConnection.close();
-        } catch (SQLException e) {
-            switch (e.getErrorCode())
-            // fejl-kode 547 svarer til en foreign key fejl
-            {
-                case 547: {
-                    if (e.getMessage().contains("cprforeign"))
-                        java.lang.System.out.println("cpr-nummer er ikke oprettet");
-                    else if (e.getMessage().contains("firmaforeign"))
-                        java.lang.System.out.println("firmaet er ikke oprettet");
-                    else
-                        java.lang.System.out.println("ukendt fremmednøglefejl");
-                    break;
-                }
-                // fejl-kode 2627 svarer til primary key fejl
-                case 2627: {
-                    java.lang.System.out.println("den pågældende ansættelse er allerede oprettet");
-                    break;
-                }
-                default:
-                    java.lang.System.out.println("fejlSQL:  " + e.getMessage());
-            }
-            ;
-        } catch (Exception e) {
-            java.lang.System.out.println("fejl:  " + e.getMessage());
         }
-    }
+        catch (SQLException e) {
+            switch (e.getErrorCode())
+            { case 547 : {if (e.getMessage().contains("FK_afviklingforeign"))
+                java.lang.System.out.println("Afviklingen er ikke oprettet");
+            else
+            if (e.getMessage().contains("FK_elevNrforeign"))
+                java.lang.System.out.println("Eleven er ikke oprettet");
+            else
+                java.lang.System.out.println("ukendt fremmednøglefejl");
+                break;
+            }
+                case 2627: {
+                    java.lang.System.out.println("Den pågældende eksamensforsøg ID er allerede oprettet");
+                    break;
+                }
+                default: java.lang.System.out.println("fejlSQL:  "+e.getMessage());
+            };
+        }
+        catch (Exception e) {
+            java.lang.System.out.println("fejl:  "+e.getMessage());
+        }
+    };
 
 
 
     public static void InsertEksamensafvikling() {
         try {
-            // indlæsning
             java.lang.System.out.println("Vi vil nu oprette en ny Eksamensafvikling");
             java.lang.System.out.println("Indtast id");
             String iDstr = inLine.readLine();
@@ -81,29 +87,26 @@ public class System {
             java.lang.System.out.println("Indtast eksamens nr");
             String eksNrstr = inLine.readLine();
 
-            // sender insert'en til db-serveren
-            String sql = "insert into afvikling values ('" + iDstr + "', '" + sPstr + "', '" + startDstr + "', '" + slutDstr + "', '" + tstr + "', '" + eksNrstr + "')";
+
+            String sql = "insert into afvikling values (" + iDstr + ", " + sPstr + ", '" + startDstr + "', '" + slutDstr + "', '" + tstr + "', " + eksNrstr + ")";
             java.lang.System.out.println("SQL-streng er " + sql);
             stmt.execute(sql);
-            // pænt svar til brugeren
-            java.lang.System.out.println("person er nu registreret");
+
+            java.lang.System.out.println("Afviklingen er nu registreret");
             if (!minConnection.isClosed()) minConnection.close();
         } catch (SQLException e) {
             switch (e.getErrorCode())
-            // fejl-kode 547 svarer til en foreign key fejl
+
             {
                 case 547: {
-                    if (e.getMessage().contains("cprforeign"))
-                        java.lang.System.out.println("cpr-nummer er ikke oprettet");
-                    else if (e.getMessage().contains("firmaforeign"))
-                        java.lang.System.out.println("firmaet er ikke oprettet");
+                    if (e.getMessage().contains("FK_eksNrforeign"))
+                        java.lang.System.out.println("eksamen er ikke oprettet");
                     else
                         java.lang.System.out.println("ukendt fremmednøglefejl");
                     break;
                 }
-                // fejl-kode 2627 svarer til primary key fejl
                 case 2627: {
-                    java.lang.System.out.println("fejl med primary key");
+                    java.lang.System.out.println("fejl med afviklings id");
                     break;
                 }
                 default:
@@ -117,22 +120,18 @@ public class System {
 
 
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
         try {
             inLine = new BufferedReader(new InputStreamReader(java.lang.System.in));
-            //generel opsætning
-            //via native driver
-            String server = "localhost\\SQLEXPRESS"; //virker måske hos dig      forsøgt med: LAPTOP-4JPSS6LS\SQLEXPRESS
-            //virker det ikke - prøv kun med localhost
-            String dbnavn = "skolesys";            //virker måske hos dig
-            String login = "sa";                     //skal ikke ændres
-            String password = "kode";            //skal ændres
+
+            String server = "localhost\\SQLEXPRESS";
+            String dbnavn = "skolesys";
+            String login = "sa";
+            String password = "kode";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             minConnection = DriverManager.getConnection("jdbc:sqlserver://" + server + ";databaseName=" + dbnavn +
                     ";user=" + login + ";password=" + password + ";");
-            //minConnection = DriverManager.getConnection("jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=eksempeldb;user=sa;password=torben07;");
             stmt = minConnection.createStatement();
-            //Indlæsning og kald af den rigtige metode
+
             java.lang.System.out.println("Indtast  ");
             java.lang.System.out.println("A for at oprette eksamens forsøg  ");
             java.lang.System.out.println("B for at oprette en eksamensafvikling");
@@ -142,7 +141,7 @@ public class System {
             String in = inLine.readLine();
             switch (in) {
                 case "A": {
-                    //selectudenparm();
+                    insertEksamensForsøg();
                     break;
                 }
                 case "B": {
@@ -150,7 +149,7 @@ public class System {
                     break;
                 }
                 case "C": {
-                    insertmedstring();
+                    //insertmedstring();
                     break;
                 }
                 default:
@@ -163,6 +162,3 @@ public class System {
 
 
 }
-
-
-
