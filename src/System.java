@@ -130,11 +130,11 @@ public class System {
                     "where a.termin = '" + terminstr + "' and e.navn = '" + eksamenstr+ "'";
             java.lang.System.out.println("SQL-streng er "+ sql);
             ResultSet res=stmt.executeQuery(sql);
-            //gennemløber svaret
+
             while (res.next()) {
                 java.lang.System.out.println(res.getString(1) + "    " + res.getString(2) + "    " + res.getString(3));
             }
-            // pæn lukning
+
             if (!minConnection.isClosed()) minConnection.close();
         }
         catch (Exception e) {
