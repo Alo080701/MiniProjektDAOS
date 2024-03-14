@@ -82,7 +82,7 @@ public class System {
             String eksNrstr = inLine.readLine();
 
             // sender insert'en til db-serveren
-            String sql = "insert into person values ()";
+            String sql = "insert into afvikling values ('" + iDstr + "', '" + sPstr + "', '" + startDstr + "', '" + slutDstr + "', '" + tstr + "', '" + eksNrstr + "')";
             java.lang.System.out.println("SQL-streng er " + sql);
             stmt.execute(sql);
             // pænt svar til brugeren
@@ -142,7 +142,7 @@ public class System {
             String in = inLine.readLine();
             switch (in) {
                 case "A": {
-                    selectudenparm();
+                    //selectudenparm();
                     break;
                 }
                 case "B": {
