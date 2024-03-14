@@ -117,6 +117,31 @@ public class System {
             java.lang.System.out.println("fejl:  " + e.getMessage());
         }
     }
+    public static void eksamensListe() {
+        try {
+            java.lang.System.out.println("Indtast eksamens navn");
+            String eksamenstr = inLine.readLine();
+            java.lang.System.out.println("Indtast termin");
+            String terminstr = inLine.readLine();
+            String sql = "select s.navn,s.PK_elevNr, ef.karakter from eksamen e " +
+                    "join afvikling a on a.FK_eksNr = e.PK_eksnr\n" +
+                    "join eksamensforsoeg ef on ef.FK_afvikling = a.PK_ID\n" +
+                    "join student s on s.PK_elevnr = ef.FK_elevNR\n" +
+                    "where a.termin = '" + terminstr + "' and e.navn = '" + eksamenstr+ "'";
+            java.lang.System.out.println("SQL-streng er "+ sql);
+            ResultSet res=stmt.executeQuery(sql);
+            //gennemløber svaret
+            while (res.next()) {
+                java.lang.System.out.println(res.getString(1) + "    " + res.getString(2) + "    " + res.getString(3));
+            }
+            // pæn lukning
+            if (!minConnection.isClosed()) minConnection.close();
+        }
+        catch (Exception e) {
+            java.lang.System.out.println("fejl:  "+e.getMessage());
+        }
+    }
+
 
 
     public static void main(String[] args) {
@@ -149,7 +174,7 @@ public class System {
                     break;
                 }
                 case "C": {
-                    //insertmedstring();
+                    eksamensListe();
                     break;
                 }
                 default:
